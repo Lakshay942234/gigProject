@@ -40,6 +40,12 @@ export const CreateGigPage = () => {
         payRate: Number(data.payRate),
         maxAgents: Number(data.maxAgents),
         requiredSkills: data.requiredSkills.split(",").map((s) => s.trim()),
+        endDate: data.endDate ? data.endDate : undefined,
+        recurringDays: Array.isArray(data.recurringDays)
+          ? data.recurringDays
+          : typeof data.recurringDays === "string"
+          ? [data.recurringDays]
+          : [],
       };
 
       await api.post("/gigs", payload);
