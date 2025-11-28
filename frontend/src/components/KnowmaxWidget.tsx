@@ -24,7 +24,7 @@ export const KnowmaxWidget = () => {
     if (!containerRef.current || !user) return;
 
     // Configuration
-    const API_KEY = "24643a75-4953-4af7-9646-4e7dba6c9dc4";
+    const API_KEY = "";
     const CLIENT = "ksoft";
 
     const context = {

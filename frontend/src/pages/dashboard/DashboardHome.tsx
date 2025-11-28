@@ -108,7 +108,7 @@ export const DashboardHome = () => {
             <h3 className="font-semibold">Learning Center</h3>
           </div>
           <div className="flex-1 bg-white rounded-lg overflow-hidden">
-            <KnowmaxWidget />
+            {/* <KnowmaxWidget /> */}
           </div>
         </div>
       </motion.div>
