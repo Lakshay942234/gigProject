@@ -41,10 +41,33 @@ export const ProfilePage = () => {
     const fetchProfile = async () => {
         try {
             const response = await api.get('/candidates/me');
-            setProfile(response.data);
+            // Auto-fill with user data from signup if profile fields are empty
+            setProfile({
+                ...response.data,
+                firstName: response.data.firstName || user?.firstName || '',
+                lastName: response.data.lastName || user?.lastName || '',
+                email: response.data.email || user?.email || '',
+            });
         } catch (err) {
             console.error('Failed to fetch profile', err);
-            setError('Failed to load profile data');
+            // If no profile exists, initialize with user data from signup
+            setProfile({
+                id: '',
+                userId: user?.id || '',
+                firstName: user?.firstName || '',
+                lastName: user?.lastName || '',
+                email: user?.email || '',
+                phone: '',
+                address: '',
+                city: '',
+                state: '',
+                zipCode: '',
+                country: '',
+                skills: [],
+                experienceYears: 0,
+                hourlyRate: 0,
+                bio: '',
+            });
         } finally {
             setIsLoading(false);
         }

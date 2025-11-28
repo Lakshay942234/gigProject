@@ -1,17 +1,61 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #f0f9ff;
-  --color-primary-100: #e0f2fe;
-  --color-primary-200: #bae6fd;
-  --color-primary-300: #7dd3fc;
-  --color-primary-400: #38bdf8;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0284c7;
-  --color-primary-700: #0369a1;
-  --color-primary-800: #075985;
-  --color-primary-900: #0c4a6e;
-  --color-primary-950: #082f49;
+  /* Upwork-inspired Color Palette */
+  --color-primary-50: #e8f5e9;
+  --color-primary-100: #c3e6c8;
+  --color-primary-200: #9dd6a4;
+  --color-primary-300: #76c67f;
+  --color-primary-400: #58ba64;
+  --color-primary-500: #14a800;
+  /* Upwork Green */
+  --color-primary-600: #129a00;
+  --color-primary-700: #0f8900;
+  --color-primary-800: #0c7800;
+  --color-primary-900: #065a00;
+
+  /* Dark Green for Dark Mode */
+  --color-primary-dark: #16c00e;
+
+  /* Neutral Colors - Upwork Style */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #001e00;
+  /* Upwork Dark Text */
+
+  /* Semantic Colors */
+  --color-success: #14a800;
+  --color-warning: #ff9800;
+  --color-error: #f44336;
+  --color-info: #2196f3;
+
+  /* Background Colors */
+  --color-background: #ffffff;
+  --color-background-secondary: #f9fafb;
+  --color-background-dark: #001e00;
+  --color-background-dark-secondary: #0a1f0a;
+
+  /* Text Colors */
+  --color-text: #001e00;
+  --color-text-muted: #6b7280;
+  --color-text-dark: #ffffff;
+  --color-text-dark-muted: #9ca3af;
+
+  /* Border Colors */
+  --color-border: #e5e7eb;
+  --color-border-dark: #374151;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 
   /* Glassmorphism Variables */
   --glass-border: rgba(255, 255, 255, 0.2);
@@ -42,14 +86,15 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 100%;
+    --foreground: 120 100% 6%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 120 100% 6%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
+    --popover-foreground: 120 100% 6%;
+    --primary: 130 100% 33%;
+    /* #14a800 Upwork Green */
+    --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -60,19 +105,20 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --ring: 130 100% 33%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --background: 120 100% 6%;
+    --foreground: 0 0% 98%;
+    --card: 120 84% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 120 84% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 130 100% 40%;
+    /* Brighter green for dark mode */
+    --primary-foreground: 120 100% 6%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -83,7 +129,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 130 100% 50%;
   }
 }
 

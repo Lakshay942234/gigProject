@@ -1,6 +1,7 @@
 import { useAuthStore } from "../../store/auth.store";
 import { StatsCard } from "../../components/dashboard/StatsCard";
 import { EarningsChart } from "../../components/dashboard/EarningsChart";
+import { LearningSection } from "../../components/dashboard/LearningSection";
 import { DollarSign, Briefcase, Star, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -100,6 +101,10 @@ export const DashboardHome = () => {
           </div>
         </motion.div>
       </div>
+
+      <motion.div variants={item}>
+        <LearningSection />
+      </motion.div>
     </motion.div>
   );
 };
