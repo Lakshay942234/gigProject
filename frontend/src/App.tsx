@@ -14,10 +14,9 @@ import { ApplicationsPage } from "./pages/dashboard/ApplicationsPage";
 import { UserManagementPage } from "./pages/dashboard/admin/UserManagementPage";
 import { AnalyticsDashboardPage } from "./pages/dashboard/admin/AnalyticsDashboardPage";
 import { PayoutsPage } from "./pages/dashboard/admin/PayoutsPage";
-import { AdminDashboardHome } from "./pages/dashboard/admin/AdminDashboardHome";
 import { CreateGigPage } from "./pages/dashboard/admin/CreateGigPage";
 
-import { DashboardHome } from "./pages/dashboard/DashboardHome";
+import { DashboardWrapper } from "./components/dashboard/DashboardWrapper";
 
 function App() {
   return (
@@ -31,22 +30,7 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route element={<DashboardLayout />}>
             {/* Role-based Dashboard Home */}
-            {/* <Route
-              path="/dashboard"
-              element={
-                <RequireAuth allowedRoles={["ADMIN", "OPERATIONS"]}>
-                  <AdminDashboardHome />
-                </RequireAuth>
-              }
-            /> */}
-            <Route
-              path="/dashboard"
-              element={
-                <RequireAuth allowedRoles={["CANDIDATE"]}>
-                  <DashboardHome />
-                </RequireAuth>
-              }
-            />
+            <Route path="/dashboard" element={<DashboardWrapper />} />
 
             {/* Common Routes */}
             <Route path="/dashboard/profile" element={<ProfilePage />} />
