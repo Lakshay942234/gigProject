@@ -39,6 +39,12 @@ export class CreateGigDto {
     @IsString({ each: true })
     @IsOptional()
     requiredCourses?: string[];
+
+    @IsNumber()
+    @IsOptional()
+    maxAgents?: number;
+
+    @is
 }
 
 export class UpdateGigDto extends CreateGigDto {

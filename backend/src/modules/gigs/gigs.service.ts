@@ -12,15 +12,21 @@ export class GigsService {
     ) { }
 
     async create(userId: string, createGigDto: CreateGigDto) {
+        const { startDate, endDate, ...gigData } = createGigDto;
+
         return this.prisma.gig.create({
             data: {
-                ...createGigDto,
+                ...gigData,
                 status: GigStatus.DRAFT,
                 createdBy: userId,
                 requiredSkills: createGigDto.requiredSkills,
                 requiredCourses: createGigDto.requiredCourses ?? [],
-                schedule: {}, // Initialize with empty schedule or add to DTO
-                maxAgents: 10, // Default or add to DTO
+                schedule: {
+                    startDate,
+                    endDate,
+                    shifts: [] // Initialize with empty shifts
+                },
+                maxAgents: createGigDto.maxAgents ?? 10,
             },
         });
     }
