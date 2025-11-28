@@ -1,0 +1,691 @@
+// BPO Gig Platform Database Schema
+// This schema defines all entities for the complete platform lifecycle
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+// IDENTITY & AUTHENTICATION
+// ============================================================================
+
+enum Role {
+  CANDIDATE
+  AGENT
+  QA
+  ADMIN
+  OPERATIONS
+  CLIENT_MANAGER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  DELETED
+}
+
+model User {
+  id           String     @id @default(uuid())
+  keycloakId   String?    @unique
+  email        String     @unique
+  phone        String?    @unique
+  firstName    String
+  lastName     String
+  role         Role
+  status       UserStatus @default(ACTIVE)
+  passwordHash String?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  lastLoginAt DateTime?
+
+  // Relations
+  candidate       Candidate?
+  qaByConductedBy QAReview[]     @relation("QAReviewConductedBy")
+  notifications   Notification[]
+
+  @@index([email])
+  @@index([keycloakId])
+  @@index([role])
+  @@map("users")
+}
+
+// ============================================================================
+// CANDIDATE ONBOARDING & QUALIFICATION
+// ============================================================================
+
+enum OnboardingStage {
+  REGISTERED
+  PROFILE_PENDING
+  DOCUMENTS_PENDING
+  VERSANT_PENDING
+  VERSANT_PASSED
+  LMS_IN_PROGRESS
+  QUALIFIED
+  REJECTED
+}
+
+model Candidate {
+  id              String          @id @default(uuid())
+  userId          String          @unique
+  onboardingStage OnboardingStage @default(REGISTERED)
+
+  // Personal Info
+  dateOfBirth DateTime?
+  address     Json? // { street, city, state, zip, country }
+
+  // Skills & Availability
+  skills       Json // Array of skill names
+  languages    Json // Array of { name, proficiency }
+  availability Json // { timezone, preferredShifts, hoursPerWeek }
+
+  // Qualification
+  versantScore    Float?
+  qualifiedToWork Boolean   @default(false)
+  qualifiedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documents       Document[]
+  testResults     TestResult[]
+  courseProgress  CourseProgress[]
+  gigApplications GigApplication[]
+  workSessions    WorkSession[]
+  wallet          Wallet?
+
+  @@index([userId])
+  @@index([onboardingStage])
+  @@index([qualifiedToWork])
+  @@map("candidates")
+}
+
+enum DocumentType {
+  ID_PROOF
+  PAN_CARD
+  AADHAAR
+  RESUME
+  CERTIFICATE
+  OTHER
+}
+
+enum DocumentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model Document {
+  id          String         @id @default(uuid())
+  candidateId String
+  type        DocumentType
+  status      DocumentStatus @default(PENDING)
+  fileUrl     String
+  fileName    String
+  fileSize    Int
+  mimeType    String
+  notes       String?
+
+  uploadedAt DateTime  @default(now())
+  verifiedAt DateTime?
+  verifiedBy String?
+
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId])
+  @@index([status])
+  @@map("documents")
+}
+
+enum TestType {
+  VERSANT
+  JOB_SPECIFIC
+  QUIZ
+  ASSESSMENT
+}
+
+enum TestStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+model TestResult {
+  id          String   @id @default(uuid())
+  candidateId String
+  testType    TestType
+  testId      String? // External test ID (e.g., from Versant)
+
+  score    Float?
+  maxScore Float?
+  passed   Boolean    @default(false)
+  status   TestStatus
+
+  metadata Json? // Test-specific data (questions answered, time taken, etc.)
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId])
+  @@index([testType])
+  @@map("test_results")
+}
+
+// ============================================================================
+// LEARNING MANAGEMENT SYSTEM (LMS)
+// ============================================================================
+
+model Course {
+  id          String  @id @default(uuid())
+  title       String
+  description String
+  processType String? // E.g., "Banking Voice", "E-commerce Chat"
+  isMandatory Boolean @default(false)
+  duration    Int? // In minutes
+  contentUrl  String?
+  order       Int     @default(0)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  quizzes  Quiz[]
+  progress CourseProgress[]
+
+  @@index([processType])
+  @@index([isMandatory])
+  @@map("courses")
+}
+
+model Quiz {
+  id           String  @id @default(uuid())
+  courseId     String
+  title        String
+  description  String?
+  passingScore Float   @default(70.0)
+  timeLimit    Int? // In minutes
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course    Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  questions QuizQuestion[]
+  attempts  QuizAttempt[]
+
+  @@index([courseId])
+  @@map("quizzes")
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  SCENARIO
+}
+
+model QuizQuestion {
+  id            String       @id @default(uuid())
+  quizId        String
+  type          QuestionType
+  question      String
+  options       Json // Array of options for MC questions
+  correctAnswer String
+  explanation   String?
+  points        Int          @default(1)
+  order         Int          @default(0)
+
+  createdAt DateTime @default(now())
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([quizId])
+  @@map("quiz_questions")
+}
+
+enum CourseProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model CourseProgress {
+  id          String               @id @default(uuid())
+  candidateId String
+  courseId    String
+  status      CourseProgressStatus @default(NOT_STARTED)
+
+  progress     Float   @default(0.0) // 0-100
+  lastPosition String? // For resuming video/content
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([candidateId, courseId])
+  @@index([candidateId])
+  @@index([courseId])
+  @@map("course_progress")
+}
+
+model QuizAttempt {
+  id          String @id @default(uuid())
+  quizId      String
+  candidateId String
+
+  score    Float
+  maxScore Float
+  passed   Boolean
+
+  answers Json // Array of { questionId, answer, correct }
+
+  startedAt   DateTime
+  completedAt DateTime
+  createdAt   DateTime @default(now())
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([quizId])
+  @@index([candidateId])
+  @@map("quiz_attempts")
+}
+
+// ============================================================================
+// GIG & JOB MANAGEMENT
+// ============================================================================
+
+enum GigStatus {
+  DRAFT
+  OPEN
+  IN_PROGRESS
+  CLOSED
+  CANCELLED
+}
+
+enum PayModel {
+  HOURLY
+  PER_TASK
+  PER_CHAT
+  FIXED
+}
+
+model Gig {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  processType String
+
+  // Pay structure
+  payRate  Float
+  payModel PayModel
+  currency String   @default("INR")
+
+  // Requirements
+  requiredSkills  Json // Array of skill names
+  minVersantScore Float?
+  requiredCourses Json? // Array of course IDs
+
+  // Capacity & Scheduling
+  maxAgents Int
+  schedule  Json // { startDate, endDate, shifts: [{day, startTime, endTime}] }
+
+  // Content
+  knowmaxBriefingId String? // Knowmax content ID
+  sopUrl            String?
+
+  status GigStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String
+
+  applications GigApplication[]
+  workSessions WorkSession[]
+
+  @@index([status])
+  @@index([processType])
+  @@map("gigs")
+}
+
+enum ApplicationStatus {
+  APPLIED
+  BRIEFING_VIEWED
+  TEST_PASSED
+  APPROVED
+  REJECTED
+  WITHDRAWN
+}
+
+model GigApplication {
+  id          String            @id @default(uuid())
+  gigId       String
+  candidateId String
+  status      ApplicationStatus @default(APPLIED)
+
+  briefingViewedAt DateTime?
+  testScore        Float?
+  testPassed       Boolean?
+
+  appliedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gig       Gig       @relation(fields: [gigId], references: [id], onDelete: Cascade)
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@unique([gigId, candidateId])
+  @@index([gigId])
+  @@index([candidateId])
+  @@index([status])
+  @@map("gig_applications")
+}
+
+// ============================================================================
+// WORK EXECUTION & CHAT
+// ============================================================================
+
+enum SessionStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  FORCIBLY_ENDED
+}
+
+model WorkSession {
+  id          String        @id @default(uuid())
+  gigId       String
+  candidateId String
+  status      SessionStatus
+
+  startTime     DateTime
+  endTime       DateTime?
+  activeMinutes Int       @default(0)
+  idleMinutes   Int       @default(0)
+
+  // Metrics
+  chatCount     Int    @default(0)
+  resolvedCount Int    @default(0)
+  avgHandleTime Float?
+
+  // Decision Tree tracking
+  dtTraversal Json? // Array of DT paths taken
+
+  // Compliance
+  wardenFlags Json? // Array of compliance violations
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gig       Gig           @relation(fields: [gigId], references: [id], onDelete: Cascade)
+  candidate Candidate     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  chats     ChatSession[]
+  qaReviews QAReview[]
+
+  @@index([gigId])
+  @@index([candidateId])
+  @@index([status])
+  @@map("work_sessions")
+}
+
+enum ChatStatus {
+  ACTIVE
+  RESOLVED
+  ESCALATED
+  ABANDONED
+}
+
+model ChatSession {
+  id             String  @id @default(uuid())
+  workSessionId  String
+  externalChatId String? // ID from external chat system
+
+  customerName  String?
+  customerEmail String?
+  customerPhone String?
+
+  status   ChatStatus
+  category String?
+  tags     Json?
+
+  startTime  DateTime
+  endTime    DateTime?
+  handleTime Int? // In seconds
+
+  transcript Json // Array of { timestamp, sender, message }
+  sentiment  String? // positive, neutral, negative
+  csatScore  Float?
+
+  createdAt DateTime @default(now())
+
+  workSession WorkSession @relation(fields: [workSessionId], references: [id], onDelete: Cascade)
+
+  @@index([workSessionId])
+  @@index([status])
+  @@map("chat_sessions")
+}
+
+// ============================================================================
+// QUALITY MANAGEMENT SYSTEM (QMS)
+// ============================================================================
+
+enum ReviewStatus {
+  PENDING
+  IN_REVIEW
+  COMPLETED
+}
+
+model QAReview {
+  id            String       @id @default(uuid())
+  workSessionId String
+  reviewerId    String
+  status        ReviewStatus @default(PENDING)
+
+  // Scorecard (customizable per process)
+  scorecard  Json // { criteria: [{name, score, maxScore, comments}] }
+  totalScore Float?
+  maxScore   Float?
+
+  // Feedback
+  feedback           String?
+  errorTags          Json? // Array of error categories
+  positives          String?
+  areasOfImprovement String?
+
+  // Actions
+  requiresRetraining Boolean @default(false)
+  retrainingCourses  Json? // Array of course IDs
+
+  reviewedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  workSession WorkSession @relation(fields: [workSessionId], references: [id], onDelete: Cascade)
+  reviewer    User        @relation("QAReviewConductedBy", fields: [reviewerId], references: [id])
+
+  @@index([workSessionId])
+  @@index([reviewerId])
+  @@index([status])
+  @@map("qa_reviews")
+}
+
+// ============================================================================
+// PAYMENTS & WALLET
+// ============================================================================
+
+enum TransactionType {
+  EARNING
+  BONUS
+  DEDUCTION
+  PAYOUT
+  REFUND
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REVERSED
+}
+
+model Wallet {
+  id          String @id @default(uuid())
+  candidateId String @unique
+  balance     Float  @default(0.0)
+
+  totalEarned    Float @default(0.0)
+  totalWithdrawn Float @default(0.0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  candidate    Candidate     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  payouts      Payout[]
+
+  @@index([candidateId])
+  @@map("wallets")
+}
+
+model Transaction {
+  id       String            @id @default(uuid())
+  walletId String
+  type     TransactionType
+  amount   Float
+  status   TransactionStatus @default(PENDING)
+
+  description String
+  metadata    Json? // { gigId, workSessionId, hours, rate, etc. }
+
+  balanceBefore Float
+  balanceAfter  Float
+
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@index([walletId])
+  @@index([type])
+  @@index([status])
+  @@map("transactions")
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Payout {
+  id       String       @id @default(uuid())
+  walletId String
+  amount   Float
+  status   PayoutStatus @default(PENDING)
+
+  paymentMethod  String // UPI, Bank Transfer, etc.
+  paymentDetails Json // { accountNumber, ifsc, upiId, etc. }
+
+  paymentGatewayId String? // External payment ID
+  failureReason    String?
+
+  requestedAt DateTime  @default(now())
+  processedAt DateTime?
+  completedAt DateTime?
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@index([walletId])
+  @@index([status])
+  @@map("payouts")
+}
+
+// ============================================================================
+// NOTIFICATIONS & COMMUNICATIONS
+// ============================================================================
+
+enum NotificationType {
+  EMAIL
+  SMS
+  WHATSAPP
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  READ
+}
+
+model Notification {
+  id     String             @id @default(uuid())
+  userId String
+  type   NotificationType
+  status NotificationStatus @default(PENDING)
+
+  subject  String?
+  message  String
+  metadata Json?
+
+  sentAt    DateTime?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@map("notifications")
+}
+
+// ============================================================================
+// ANALYTICS & REPORTING
+// ============================================================================
+
+model AnalyticsSnapshot {
+  id           String   @id @default(uuid())
+  snapshotDate DateTime
+
+  // Capacity metrics
+  totalCandidates Int
+  qualifiedAgents Int
+  activeAgents    Int
+
+  // Work metrics
+  totalSessions Int
+  totalChats    Int
+  avgHandleTime Float?
+  avgCsat       Float?
+
+  // Quality metrics
+  avgQaScore     Float?
+  complianceRate Float?
+
+  // Financial
+  totalEarnings Float
+  totalPayouts  Float
+
+  metadata Json? // Process-wise breakdowns, etc.
+
+  createdAt DateTime @default(now())
+
+  @@unique([snapshotDate])
+  @@index([snapshotDate])
+  @@map("analytics_snapshots")
+}
