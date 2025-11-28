@@ -39,6 +39,19 @@ export class CreateGigDto {
   @IsString({ each: true })
   requiredSkills: string[];
 
+  @IsString()
+  @IsOptional()
+  startTime?: string;
+
+  @IsString()
+  @IsOptional()
+  endTime?: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  recurringDays?: string[];
+
   @IsNumber()
   @IsOptional()
   minVersantScore?: number;
