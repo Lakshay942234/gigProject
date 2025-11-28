@@ -1,7 +1,6 @@
 import { useAuthStore } from "../../store/auth.store";
 import { StatsCard } from "../../components/dashboard/StatsCard";
 import { EarningsChart } from "../../components/dashboard/EarningsChart";
-import { KnowmaxWidget } from "../../components/KnowmaxWidget";
 import { DollarSign, Briefcase, Star, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -28,54 +27,55 @@ export const DashboardHome = () => {
       variants={container}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-8rem)]"
+      className="space-y-8"
     >
-      {/* Left Column: Stats & Main Content */}
-      <div className="space-y-6 overflow-y-auto pr-2">
-        <motion.div variants={item}>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
-            Welcome back, {user?.firstName}!
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Here's what's happening with your gigs today.
-          </p>
-        </motion.div>
+      <motion.div variants={item}>
+        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+          Welcome back, {user?.firstName}!
+        </h1>
+        <p className="text-muted-foreground mt-2">
+          Here's what's happening with your gigs today.
+        </p>
+      </motion.div>
 
-        <motion.div variants={item} className="grid gap-4 grid-cols-2">
-          <StatsCard
-            title="Total Earnings"
-            value="$2,450"
-            icon={DollarSign}
-            description="+$350 from last week"
-            trend={{ value: 12, label: "vs last month" }}
-          />
-          <StatsCard
-            title="Active Gigs"
-            value="3"
-            icon={Briefcase}
-            description="2 pending applications"
-          />
-          <StatsCard
-            title="Success Score"
-            value="98%"
-            icon={Star}
-            description="Top Rated Plus status"
-            trend={{ value: 2, label: "vs last month" }}
-          />
-          <StatsCard
-            title="Hours Worked"
-            value="124h"
-            icon={Clock}
-            description="This month"
-          />
-        </motion.div>
+      <motion.div
+        variants={item}
+        className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+      >
+        <StatsCard
+          title="Total Earnings"
+          value="$2,450"
+          icon={DollarSign}
+          description="+$350 from last week"
+          trend={{ value: 12, label: "vs last month" }}
+        />
+        <StatsCard
+          title="Active Gigs"
+          value="3"
+          icon={Briefcase}
+          description="2 pending applications"
+        />
+        <StatsCard
+          title="Success Score"
+          value="98%"
+          icon={Star}
+          description="Top Rated Plus status"
+          trend={{ value: 2, label: "vs last month" }}
+        />
+        <StatsCard
+          title="Hours Worked"
+          value="124h"
+          icon={Clock}
+          description="This month"
+        />
+      </motion.div>
 
-        <motion.div variants={item}>
+      <div className="grid gap-4 md:grid-cols-7">
+        <motion.div variants={item} className="col-span-4">
           <EarningsChart />
         </motion.div>
-
-        <motion.div variants={item}>
-          <div className="glass-card rounded-xl p-6 border border-white/20">
+        <motion.div variants={item} className="col-span-3">
+          <div className="glass-card rounded-xl p-6 h-full border border-white/20">
             <h3 className="font-semibold mb-4">Recommended for You</h3>
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
@@ -100,18 +100,6 @@ export const DashboardHome = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* Right Column: Learning Center (Knowmax) */}
-      <motion.div variants={item} className="h-full">
-        <div className="glass-card rounded-xl p-1 h-full border border-white/20 flex flex-col">
-          <div className="p-4 pb-2">
-            <h3 className="font-semibold">Learning Center</h3>
-          </div>
-          <div className="flex-1 bg-white rounded-lg overflow-hidden">
-            <KnowmaxWidget />
-          </div>
-        </div>
-      </motion.div>
     </motion.div>
   );
 };
