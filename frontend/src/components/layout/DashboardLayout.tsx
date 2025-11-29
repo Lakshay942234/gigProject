@@ -49,6 +49,7 @@ export const DashboardLayout = () => {
     },
     { name: "Analytics", href: "/dashboard/admin/analytics", icon: FileText },
     { name: "Payouts", href: "/dashboard/admin/payouts", icon: FileText },
+
   ];
 
   const candidateNavigation = [

@@ -56,6 +56,12 @@ export class WorkController {
     return this.workService.createChatSession(createChatDto);
   }
 
+  @Get('chat/:id')
+  @Roles(Role.CANDIDATE, Role.AGENT)
+  getChatSession(@Param('id') id: string) {
+    return this.workService.getChatSession(id);
+  }
+
   @Patch('chat/:id')
   @Roles(Role.CANDIDATE, Role.AGENT)
   updateChatSession(

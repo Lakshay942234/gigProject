@@ -91,6 +91,16 @@ export class WorkService {
     });
   }
 
+  async getChatSession(id: string) {
+    const chatSession = await this.prisma.chatSession.findUnique({
+      where: { id },
+    });
+
+    if (!chatSession) throw new NotFoundException('Chat session not found');
+
+    return chatSession;
+  }
+
   async updateChatSession(id: string, updateChatDto: UpdateChatSessionDto) {
     return this.prisma.chatSession.update({
       where: { id },
