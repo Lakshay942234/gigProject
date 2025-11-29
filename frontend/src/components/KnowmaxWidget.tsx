@@ -25,14 +25,14 @@ export const KnowmaxWidget = () => {
     const API_KEY = "24643a75-4953-4af7-9646-4e7dba6c9dc4";
     const CLIENT = "ksoft";
 
-    const context = {
-      userEmail: user.email,
-      userName: `${user.firstName} ${user.lastName}`,
-    };
+    // const context = {
+    //   userEmail: user.email,
+    //   userName: `${user.firstName} ${user.lastName}`,
+    // };
 
-    const opts = {
-      recommendationQuery: "learning modules",
-    };
+    // const opts = {
+    //   recommendationQuery: "learning modules",
+    // };
 
     try {
       // Clear container before initializing to handle re-mounts and prevent duplicates
