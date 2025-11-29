@@ -27,11 +27,4 @@ export class NotificationsController {
   ) {
     return this.notificationsService.subscribe(subscription, req.user.id);
   }
-
-  @Post('test')
-  @UseGuards(JwtAuthGuard)
-  async testNotification(@Req() req: RequestWithUser) {
-    await this.notificationsService.sendTestNotification(req.user.id);
-    return { message: 'Test notification scheduled in 5 seconds' };
-  }
 }

@@ -50,7 +50,7 @@ export const usePushNotifications = () => {
       // Request permission explicitly
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
-        alert("Permission not granted for notifications");
+        // alert("Permission not granted for notifications");
         return;
       }
 
@@ -75,10 +75,10 @@ export const usePushNotifications = () => {
 
       // Send subscription to backend
       await api.post("/notifications/subscribe", newSubscription);
-      alert("Successfully subscribed to notifications!");
+      // alert("Successfully subscribed to notifications!");
     } catch (error) {
       console.error("Failed to subscribe the user: ", error);
-      alert("Failed to subscribe to notifications. Check console for details.");
+      // alert("Failed to subscribe to notifications. Check console for details.");
     }
   };
 

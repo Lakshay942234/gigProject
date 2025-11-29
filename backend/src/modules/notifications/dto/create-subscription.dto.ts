@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsObject } from 'class-validator';
+import { IsNotEmpty, IsString, IsObject, IsOptional } from 'class-validator';
 
 export class CreateSubscriptionDto {
   @IsString()
@@ -11,4 +11,7 @@ export class CreateSubscriptionDto {
     p256dh: string;
     auth: string;
   };
+
+  @IsOptional()
+  expirationTime?: number | null;
 }

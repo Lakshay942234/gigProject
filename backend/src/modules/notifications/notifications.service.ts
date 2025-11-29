@@ -3,7 +3,6 @@ import { PrismaService } from '../../database/prisma.service';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import * as webpush from 'web-push';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PushSubscription as PrismaPushSubscription } from '@prisma/client';
 
 @Injectable()
 export class NotificationsService {
@@ -21,6 +20,9 @@ export class NotificationsService {
     subscription: CreateSubscriptionDto,
     userId: string,
   ): Promise<any> {
+    this.logger.log(
+      `Subscribing user ${userId} with endpoint ${subscription.endpoint}`,
+    );
     // Check if subscription already exists
     const existing = await this.prisma.pushSubscription.findFirst({
       where: {
@@ -30,16 +32,19 @@ export class NotificationsService {
     });
 
     if (existing) {
+      this.logger.log(`Subscription already exists for user ${userId}`);
       return existing;
     }
 
-    return this.prisma.pushSubscription.create({
+    const newSub = await this.prisma.pushSubscription.create({
       data: {
         userId,
         endpoint: subscription.endpoint,
         keys: subscription.keys,
       },
     });
+    this.logger.log(`Created new subscription for user ${userId}`);
+    return newSub;
   }
 
   async sendNotification(subscription: any, payload: any) {
@@ -150,46 +155,5 @@ export class NotificationsService {
         }
       }
     }
-  }
-
-  async sendTestNotification(userId: string) {
-    this.logger.log(
-      `Scheduling test notification for user ${userId} in 5 seconds`,
-    );
-    setTimeout(async () => {
-      try {
-        const subscriptions: PrismaPushSubscription[] =
-          await this.prisma.pushSubscription.findMany({
-            where: { userId },
-          });
-
-        this.logger.log(
-          `Found ${subscriptions.length} subscriptions for user ${userId}`,
-        );
-
-        for (const sub of subscriptions) {
-          try {
-            await this.sendNotification(
-              { endpoint: sub.endpoint, keys: sub.keys as any },
-              {
-                title: 'Test Notification',
-                body: 'This is a test notification sent after 5 seconds!',
-                url: '/dashboard',
-              },
-            );
-            this.logger.log(
-              `Successfully sent notification to endpoint ${sub.endpoint}`,
-            );
-          } catch (err) {
-            this.logger.error(
-              `Failed to send to endpoint ${sub.endpoint}`,
-              err,
-            );
-          }
-        }
-      } catch (error) {
-        this.logger.error('Error in test notification timeout', error);
-      }
-    }, 5000);
   }
 }

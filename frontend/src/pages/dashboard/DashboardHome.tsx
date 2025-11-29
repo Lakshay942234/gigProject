@@ -5,7 +5,6 @@ import { LearningSection } from "../../components/dashboard/LearningSection";
 import { ActivityFeed } from "../../components/dashboard/ActivityFeed";
 import { DollarSign, Briefcase, Star, Clock } from "lucide-react";
 import { motion } from "framer-motion";
-import { NotificationButton } from "../../components/dashboard/NotificationButton";
 
 export const DashboardHome = () => {
   const { user } = useAuthStore();
@@ -39,9 +38,6 @@ export const DashboardHome = () => {
         <p className="text-muted-foreground mt-2">
           Here's what's happening with your gigs today.
         </p>
-        <div className="mt-4">
-          <NotificationButton />
-        </div>
       </motion.div>
 
       <motion.div
@@ -54,7 +50,9 @@ export const DashboardHome = () => {
           icon={DollarSign}
           description="This month"
           trend={{ value: 12, label: "vs last month" }}
-          sparklineData={[1200, 1450, 1300, 1800, 1950, 1700, 2100, 2300, 2200, 2450]}
+          sparklineData={[
+            1200, 1450, 1300, 1800, 1950, 1700, 2100, 2300, 2200, 2450,
+          ]}
         />
         <AdvancedStatsCard
           title="Active Gigs"
