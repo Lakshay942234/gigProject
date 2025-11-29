@@ -106,7 +106,7 @@ export const NotificationsCenter = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 mt-2 w-80 md:w-96 z-50 bg-white dark:bg-zinc-950 text-popover-foreground border border-border rounded-xl shadow-2xl overflow-hidden"
+              className="absolute right-0 mt-2 w-80 md:w-96 z-50 bg-white text-popover-foreground border border-border rounded-xl shadow-2xl overflow-hidden"
             >
               {/* Header */}
               <div className="p-4 border-b border-white/10">
@@ -180,7 +180,7 @@ export const NotificationsCenter = () => {
               </div>
 
               {/* Footer */}
-              <div className="p-3 border-t border-white/10 bg-white/5 dark:bg-black/5 flex flex-col gap-2">
+              <div className="p-3 border-t border-white/10 bg-white/5 flex flex-col gap-2">
                 <NotificationButton />
                 {notifications.length > 0 && (
                   <button className="w-full text-sm text-primary hover:underline flex items-center justify-center gap-2">

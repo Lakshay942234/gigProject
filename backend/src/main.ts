@@ -7,8 +7,7 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: /^http:\/\/localhost:\d+$/,
-    credentials: true,
+    origin: '*',
   });
 
   // Global validation pipe

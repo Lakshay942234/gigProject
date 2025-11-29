@@ -14,9 +14,6 @@
   --color-primary-800: #0c7800;
   --color-primary-900: #065a00;
 
-  /* Dark Green for Dark Mode */
-  --color-primary-dark: #16c00e;
-
   /* Neutral Colors - Upwork Style */
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
@@ -39,18 +36,13 @@
   /* Background Colors */
   --color-background: #ffffff;
   --color-background-secondary: #f9fafb;
-  --color-background-dark: #001e00;
-  --color-background-dark-secondary: #0a1f0a;
 
   /* Text Colors */
   --color-text: #001e00;
   --color-text-muted: #6b7280;
-  --color-text-dark: #ffffff;
-  --color-text-dark-muted: #9ca3af;
 
   /* Border Colors */
   --color-border: #e5e7eb;
-  --color-border-dark: #374151;
 
   /* Shadow */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -110,26 +102,7 @@
   }
 
   .dark {
-    --background: 120 100% 6%;
-    --foreground: 0 0% 98%;
-    --card: 120 84% 8%;
-    --card-foreground: 0 0% 98%;
-    --popover: 120 84% 8%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 130 100% 40%;
-    /* Brighter green for dark mode */
-    --primary-foreground: 120 100% 6%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 130 100% 50%;
+    /* Dark mode variables removed */
   }
 }
 
@@ -145,10 +118,10 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-sm;
+    @apply bg-white/80 backdrop-blur-xl border border-gray-200 shadow-sm;
   }
 
   .glass-card {
-    @apply bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-gray-200 dark:border-white/10 shadow-sm;
+    @apply bg-white/60 backdrop-blur-md border border-gray-200 shadow-sm;
   }
 }

@@ -32,7 +32,7 @@ export const DashboardHome = () => {
       className="space-y-8"
     >
       <motion.div variants={item}>
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
           Welcome back, {user?.firstName}!
         </h1>
         <p className="text-muted-foreground mt-2">

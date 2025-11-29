@@ -117,7 +117,7 @@ export const GigBoardPage = () => {
                     const rate = gig.payRate || gig.hourlyRate || 0;
 
                     // Calculate hours if shift times are available
-                    let totalPay = rate;
+                    // let totalPay = rate;
                     let displayText = `${currencySymbol}${rate}/hr`;
 
                     if (gig.schedule?.startTime && gig.schedule?.endTime) {
@@ -131,7 +131,7 @@ export const GigBoardPage = () => {
                         const hours =
                           endHour + endMin / 60 - (startHour + startMin / 60);
                         if (hours > 0) {
-                          totalPay = Math.round(rate * hours);
+                          // totalPay = Math.round(rate * hours);
                           displayText = `${currencySymbol}${rate}/hr`;
                         }
                       } catch (e) {
