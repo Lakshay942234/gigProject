@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bell, Check, X, Settings } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { NotificationButton } from "./NotificationButton";
 
 interface Notification {
   id: string;
@@ -179,14 +180,15 @@ export const NotificationsCenter = () => {
               </div>
 
               {/* Footer */}
-              {notifications.length > 0 && (
-                <div className="p-3 border-t border-white/10 bg-white/5 dark:bg-black/5">
+              <div className="p-3 border-t border-white/10 bg-white/5 dark:bg-black/5 flex flex-col gap-2">
+                <NotificationButton />
+                {notifications.length > 0 && (
                   <button className="w-full text-sm text-primary hover:underline flex items-center justify-center gap-2">
                     <Settings className="h-4 w-4" />
                     Notification Preferences
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </motion.div>
           </>
         )}

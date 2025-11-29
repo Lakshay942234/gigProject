@@ -4,6 +4,8 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import * as webpush from 'web-push';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
+import { PushSubscription as PrismaPushSubscription } from '@prisma/client';
+
 @Injectable()
 export class NotificationsService {
   private readonly logger = new Logger(NotificationsService.name);
@@ -59,6 +61,47 @@ export class NotificationsService {
         });
       }
     }
+  }
+
+  async sendTestNotification(userId: string) {
+    this.logger.log(
+      `Scheduling test notification for user ${userId} in 5 seconds`,
+    );
+    setTimeout(async () => {
+      try {
+        const subscriptions: PrismaPushSubscription[] =
+          await this.prisma.pushSubscription.findMany({
+            where: { userId },
+          });
+
+        this.logger.log(
+          `Found ${subscriptions.length} subscriptions for user ${userId}`,
+        );
+
+        for (const sub of subscriptions) {
+          try {
+            await this.sendNotification(
+              { endpoint: sub.endpoint, keys: sub.keys as any },
+              {
+                title: 'You have a new gig!',
+                body: 'Click to view',
+                url: '/dashboard/gigs',
+              },
+            );
+            this.logger.log(
+              `Successfully sent notification to endpoint ${sub.endpoint}`,
+            );
+          } catch (err) {
+            this.logger.error(
+              `Failed to send to endpoint ${sub.endpoint}`,
+              err,
+            );
+          }
+        }
+      } catch (error) {
+        this.logger.error('Error in test notification timeout', error);
+      }
+    }, 5000);
   }
 
   @Cron(CronExpression.EVERY_MINUTE)

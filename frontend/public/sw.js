@@ -21,6 +21,7 @@ self.addEventListener("push", function (event) {
       data: {
         url: data.url,
       },
+      requireInteraction: true,
     };
 
     event.waitUntil(self.registration.showNotification(data.title, options));

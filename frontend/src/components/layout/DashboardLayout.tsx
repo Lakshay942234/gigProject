@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../../store/auth.store";
 import { useTheme } from "../theme/ThemeProvider";
 import { NotificationsCenter } from "../dashboard/NotificationsCenter";
-import { usePushNotifications } from "../../lib/usePushNotifications";
 import {
   LayoutDashboard,
   User,
@@ -15,13 +14,13 @@ import {
   Sun,
   Moon,
   Plus,
-  GraduationCap,
-  Monitor,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "../../lib/utils";
 import { PageTransition } from "./PageTransition";
 import { motion, AnimatePresence } from "framer-motion";
+
+import { usePushNotifications } from "../../lib/usePushNotifications";
 
 export const DashboardLayout = () => {
   const { user, logout } = useAuthStore();
@@ -29,40 +28,36 @@ export const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { subscribeToPush, subscription } = usePushNotifications();
+  const { subscribeToPush } = usePushNotifications();
 
   useEffect(() => {
-    if (user && !subscription) {
-      // Auto-subscribe user to push notifications
-      subscribeToPush();
-    }
-  }, [user, subscription, subscribeToPush]);
+    // Auto-subscribe to push notifications
+    subscribeToPush();
+  }, []);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
-
   const adminNavigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Users', href: '/dashboard/admin/users', icon: User },
-    { name: 'Create Gig', href: '/dashboard/admin/create-gig', icon: Plus },
-    { name: 'Applications', href: '/dashboard/admin/applications', icon: FileText },
-    { name: 'Analytics', href: '/dashboard/admin/analytics', icon: FileText },
-    { name: 'Payouts', href: '/dashboard/admin/payouts', icon: FileText },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Create Gig", href: "/dashboard/admin/gigs/create", icon: Plus },
+    { name: "User Management", href: "/dashboard/admin/users", icon: User },
+    { name: "Analytics", href: "/dashboard/admin/analytics", icon: Briefcase },
+    { name: "Payouts", href: "/dashboard/admin/payouts", icon: FileText },
   ];
 
   const candidateNavigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Gig Board', href: '/dashboard/gigs', icon: Briefcase },
-    { name: 'My Applications', href: '/dashboard/applications', icon: FileText },
-    { name: 'My Workspace', href: '/dashboard/workspace', icon: Monitor },
-    { name: 'Learning', href: '/dashboard/learning', icon: GraduationCap },
-    { name: 'Profile', href: '/dashboard/profile', icon: User },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Profile", href: "/dashboard/profile", icon: User },
+    { name: "Gigs", href: "/dashboard/gigs", icon: Briefcase },
+    {
+      name: "My Applications",
+      href: "/dashboard/applications",
+      icon: FileText,
+    },
   ];
-
-
 
   const navigation =
     user?.role === "ADMIN" || user?.role === "OPERATIONS"
