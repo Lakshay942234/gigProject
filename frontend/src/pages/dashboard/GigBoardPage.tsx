@@ -68,99 +68,8 @@ export const GigBoardPage = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Available Gigs</h2>
-          <p className="text-muted-foreground">
-            Browse and apply for opportunities that match your skills.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {gigs.map((gig) => (
-            <Card key={gig.id} className="flex flex-col">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-xl">{gig.title}</CardTitle>
-                  <Badge variant={gig.status === 'OPEN' ? 'default' : 'secondary'}>
-                    {gig.status}
-                  </Badge>
-                </div>
-                <CardDescription className="whitespace-pre-wrap text-sm max-h-32 overflow-y-auto">
-                  {gig.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <div className="space-y-2 text-sm text-muted-foreground">
-                  {/* Shift Time */}
-                  {gig.schedule?.startTime && gig.schedule?.endTime && (
-                    <div className="flex items-center">
-                      <Clock className="mr-2 h-4 w-4" />
-                      {gig.schedule.startTime} - {gig.schedule.endTime}
-                    </div>
-                  )}
-
-                  {/* Pay Rate and Total Pay */}
-                  <div className="flex items-center">
-                    <IndianRupee className="mr-2 h-4 w-4" />
-                    {(() => {
-                      const currencySymbol = gig.currency === '₹';
-                      const rate = gig.payRate || gig.hourlyRate || 0;
-
-                      // Calculate hours if shift times are available
-                      let totalPay = rate;
-                      let displayText = `${currencySymbol}${rate}/hr`;
-
-                      if (gig.schedule?.startTime && gig.schedule?.endTime) {
-                        try {
-                          const [startHour, startMin] = gig.schedule.startTime.split(':').map(Number);
-                          const [endHour, endMin] = gig.schedule.endTime.split(':').map(Number);
-                          const hours = (endHour + endMin / 60) - (startHour + startMin / 60);
-                          if (hours > 0) {
-                            totalPay = Math.round(rate * hours);
-                            displayText = `${currencySymbol}${rate}/hr (${currencySymbol}${totalPay.toLocaleString()} for ${hours}h/day)`;
-                          }
-                        } catch (e) {
-                          // If parsing fails, just show hourly rate
-                        }
-                      }
-
-                      return displayText;
-                    })()}
-                  </div>
-
-                  <div className="flex items-center">
-                    <MapPin className="mr-2 h-4 w-4" />
-                    {gig.location || 'Remote'}
-                  </div>
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {gig.requiredSkills.map((skill) => (
-                    <Badge key={skill} variant="outline" className="text-xs">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button
-                  className="w-full"
-                  onClick={() => handleApply(gig.id)}
-                  disabled={applyingId === gig.id}
-                >
-                  {applyingId === gig.id && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Apply Now
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-
-          {gigs.length === 0 && (
-            <div className="col-span-full text-center py-12 text-muted-foreground">
-              No gigs available at the moment. Check back later!
-            </div>
-          )}
-        </div>
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -192,13 +101,48 @@ export const GigBoardPage = () => {
             </CardHeader>
             <CardContent className="flex-1">
               <div className="space-y-2 text-sm text-muted-foreground">
+                {/* Shift Time */}
+                {gig.schedule?.startTime && gig.schedule?.endTime && (
+                  <div className="flex items-center">
+                    <Clock className="mr-2 h-4 w-4" />
+                    {gig.schedule.startTime} - {gig.schedule.endTime}
+                  </div>
+                )}
+
+                {/* Pay Rate and Total Pay */}
                 <div className="flex items-center">
-                  <IndianRupee className="mr-2 h-4 w-4" />${gig.hourlyRate}/hr
+                  <IndianRupee className="mr-2 h-4 w-4" />
+                  {(() => {
+                    const currencySymbol = "₹";
+                    const rate = gig.payRate || gig.hourlyRate || 0;
+
+                    // Calculate hours if shift times are available
+                    let totalPay = rate;
+                    let displayText = `${currencySymbol}${rate}/hr`;
+
+                    if (gig.schedule?.startTime && gig.schedule?.endTime) {
+                      try {
+                        const [startHour, startMin] = gig.schedule.startTime
+                          .split(":")
+                          .map(Number);
+                        const [endHour, endMin] = gig.schedule.endTime
+                          .split(":")
+                          .map(Number);
+                        const hours =
+                          endHour + endMin / 60 - (startHour + startMin / 60);
+                        if (hours > 0) {
+                          totalPay = Math.round(rate * hours);
+                          displayText = `${currencySymbol}${rate}/hr`;
+                        }
+                      } catch (e) {
+                        // If parsing fails, just show hourly rate
+                      }
+                    }
+
+                    return displayText;
+                  })()}
                 </div>
-                <div className="flex items-center">
-                  <Clock className="mr-2 h-4 w-4" />
-                  {gig.duration || "Ongoing"}
-                </div>
+
                 <div className="flex items-center">
                   <MapPin className="mr-2 h-4 w-4" />
                   {gig.location || "Remote"}

@@ -109,6 +109,7 @@ export const DashboardLayout = () => {
                 <Link
                   key={item.name}
                   to={item.href}
+                  onClick={() => setIsSidebarOpen(false)}
                   className={cn(
                     "group flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                     isActive
