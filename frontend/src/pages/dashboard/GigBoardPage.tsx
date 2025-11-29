@@ -10,7 +10,7 @@ import {
 } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
-import { Loader2, DollarSign, Clock, MapPin } from "lucide-react";
+import { Loader2, IndianRupee, Clock, MapPin } from "lucide-react";
 
 interface Gig {
   id: string;
@@ -102,7 +102,7 @@ export const GigBoardPage = () => {
 
                   {/* Pay Rate and Total Pay */}
                   <div className="flex items-center">
-                    <DollarSign className="mr-2 h-4 w-4" />
+                    <IndianRupee className="mr-2 h-4 w-4" />
                     {(() => {
                       const currencySymbol = gig.currency === 'INR' ? '₹' : '$';
                       const rate = gig.payRate || gig.hourlyRate || 0;
@@ -193,7 +193,7 @@ export const GigBoardPage = () => {
             <CardContent className="flex-1">
               <div className="space-y-2 text-sm text-muted-foreground">
                 <div className="flex items-center">
-                  <DollarSign className="mr-2 h-4 w-4" />${gig.hourlyRate}/hr
+                  <IndianRupee className="mr-2 h-4 w-4" />${gig.hourlyRate}/hr
                 </div>
                 <div className="flex items-center">
                   <Clock className="mr-2 h-4 w-4" />

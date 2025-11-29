@@ -1,5 +1,5 @@
 import { StatsCard } from "../../../components/dashboard/StatsCard";
-import { Users, Briefcase, DollarSign, Activity } from "lucide-react";
+import { Users, Briefcase, IndianRupee, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const AdminDashboardHome = () => {
@@ -53,8 +53,8 @@ export const AdminDashboardHome = () => {
         />
         <StatsCard
           title="Total Payouts"
-          value="$12,450"
-          icon={DollarSign}
+          value="₹12,450"
+          icon={IndianRupee}
           description="Pending processing"
         />
         <StatsCard

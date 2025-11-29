@@ -3,7 +3,7 @@ import { AdvancedStatsCard } from "../../components/dashboard/AdvancedStatsCard"
 import { EarningsChart } from "../../components/dashboard/EarningsChart";
 import { LearningSection } from "../../components/dashboard/LearningSection";
 import { ActivityFeed } from "../../components/dashboard/ActivityFeed";
-import { DollarSign, Briefcase, Star, Clock } from "lucide-react";
+import { IndianRupee, Briefcase, Star, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const DashboardHome = () => {
@@ -47,7 +47,7 @@ export const DashboardHome = () => {
         <AdvancedStatsCard
           title="Total Earnings"
           value={2450}
-          icon={DollarSign}
+          icon={IndianRupee}
           description="This month"
           trend={{ value: 12, label: "vs last month" }}
           sparklineData={[

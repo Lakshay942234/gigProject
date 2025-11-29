@@ -18,6 +18,7 @@ import { CreateGigPage } from './pages/dashboard/admin/CreateGigPage';
 import { ApplicationManagementPage } from './pages/dashboard/admin/ApplicationManagementPage';
 import { WorkspacePage } from './pages/dashboard/WorkspacePage';
 import { ActiveWorkPage } from './pages/dashboard/ActiveWorkPage';
+import { LearningPage } from './pages/dashboard/LearningPage';
 
 import { DashboardWrapper } from "./components/dashboard/DashboardWrapper";
 
@@ -44,6 +45,10 @@ function App() {
               path="/dashboard/applications"
               element={<ApplicationsPage />}
             />
+            <Route
+              path="/dashboard/learning"
+              element={<LearningPage />}
+            />
           </Route>
 
           {/* Admin Routes */}
@@ -68,7 +73,7 @@ function App() {
                 element={<PayoutsPage />}
               />
               <Route
-                path="/dashboard/admin/gigs/create"
+                path="/dashboard/admin/create-gig"
                 element={<CreateGigPage />}
               />
             </Route>

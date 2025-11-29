@@ -44,8 +44,8 @@ export const CreateGigPage = () => {
         recurringDays: Array.isArray(data.recurringDays)
           ? data.recurringDays
           : typeof data.recurringDays === "string"
-          ? [data.recurringDays]
-          : [],
+            ? [data.recurringDays]
+            : [],
       };
 
       await api.post("/gigs", payload);
@@ -134,6 +134,7 @@ export const CreateGigPage = () => {
               <Input
                 {...register("currency", { required: true })}
                 defaultValue="INR"
+                placeholder="INR"
               />
             </div>
 
