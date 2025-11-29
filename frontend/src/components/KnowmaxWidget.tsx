@@ -8,9 +8,7 @@ declare global {
       client: string,
       apiKey: string,
       initialQuery: string,
-      container: HTMLElement,
-      context: any,
-      opts: any
+      container: HTMLElement
     ) => any;
   }
 }
@@ -48,9 +46,7 @@ export const KnowmaxWidget = () => {
           CLIENT,
           API_KEY,
           "Phygital", // Empty initial search query as we want recommendations
-          containerRef.current,
-          context,
-          opts
+          containerRef.current
         );
       } else {
         console.error("Knowmax SDK not loaded");
