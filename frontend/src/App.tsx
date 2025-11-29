@@ -14,7 +14,10 @@ import { ApplicationsPage } from "./pages/dashboard/ApplicationsPage";
 import { UserManagementPage } from "./pages/dashboard/admin/UserManagementPage";
 import { AnalyticsDashboardPage } from "./pages/dashboard/admin/AnalyticsDashboardPage";
 import { PayoutsPage } from "./pages/dashboard/admin/PayoutsPage";
-import { CreateGigPage } from "./pages/dashboard/admin/CreateGigPage";
+import { CreateGigPage } from './pages/dashboard/admin/CreateGigPage';
+import { ApplicationManagementPage } from './pages/dashboard/admin/ApplicationManagementPage';
+import { WorkspacePage } from './pages/dashboard/WorkspacePage';
+import { ActiveWorkPage } from './pages/dashboard/ActiveWorkPage';
 
 import { DashboardWrapper } from "./components/dashboard/DashboardWrapper";
 
@@ -34,6 +37,8 @@ function App() {
 
             {/* Common Routes */}
             <Route path="/dashboard/profile" element={<ProfilePage />} />
+            <Route path="/dashboard/workspace" element={<WorkspacePage />} />
+            <Route path="/dashboard/workspace/:gigId" element={<ActiveWorkPage />} />
             <Route path="/dashboard/gigs" element={<GigBoardPage />} />
             <Route
               path="/dashboard/applications"
@@ -49,6 +54,10 @@ function App() {
               <Route
                 path="/dashboard/admin/users"
                 element={<UserManagementPage />}
+              />
+              <Route
+                path="/dashboard/admin/applications"
+                element={<ApplicationManagementPage />}
               />
               <Route
                 path="/dashboard/admin/analytics"

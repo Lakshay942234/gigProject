@@ -116,4 +116,61 @@ export class GigsService {
       include: { gig: true },
     });
   }
+
+  async getAllApplications() {
+    return this.prisma.gigApplication.findMany({
+      include: {
+        gig: {
+          select: {
+            id: true,
+            title: true,
+            processType: true,
+            payRate: true,
+            status: true,
+          },
+        },
+        candidate: {
+          include: {
+            user: {
+              select: {
+                email: true,
+                firstName: true,
+                lastName: true,
+                phone: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { appliedAt: 'desc' },
+    });
+  }
+
+  async acceptApplication(id: string) {
+    const application = await this.prisma.gigApplication.findUnique({
+      where: { id },
+    });
+    if (!application) throw new NotFoundException('Application not found');
+
+    return this.prisma.gigApplication.update({
+      where: { id },
+      data: {
+        status: ApplicationStatus.APPROVED,
+      },
+    });
+  }
+
+  async rejectApplication(id: string) {
+    const application = await this.prisma.gigApplication.findUnique({
+      where: { id },
+    });
+    if (!application) throw new NotFoundException('Application not found');
+
+    return this.prisma.gigApplication.update({
+      where: { id },
+      data: {
+        status: ApplicationStatus.REJECTED,
+      },
+    });
+  }
 }

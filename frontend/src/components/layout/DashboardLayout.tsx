@@ -15,6 +15,8 @@ import {
   Sun,
   Moon,
   Plus,
+  GraduationCap,
+  Monitor,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "../../lib/utils";
@@ -41,24 +43,26 @@ export const DashboardLayout = () => {
     navigate("/login");
   };
 
+
   const adminNavigation = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Create Gig", href: "/dashboard/admin/gigs/create", icon: Plus },
-    { name: "User Management", href: "/dashboard/admin/users", icon: User },
-    { name: "Analytics", href: "/dashboard/admin/analytics", icon: Briefcase },
-    { name: "Payouts", href: "/dashboard/admin/payouts", icon: FileText },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Users', href: '/dashboard/admin/users', icon: User },
+    { name: 'Create Gig', href: '/dashboard/admin/create-gig', icon: Plus },
+    { name: 'Applications', href: '/dashboard/admin/applications', icon: FileText },
+    { name: 'Analytics', href: '/dashboard/admin/analytics', icon: FileText },
+    { name: 'Payouts', href: '/dashboard/admin/payouts', icon: FileText },
   ];
 
   const candidateNavigation = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Profile", href: "/dashboard/profile", icon: User },
-    { name: "Gigs", href: "/dashboard/gigs", icon: Briefcase },
-    {
-      name: "My Applications",
-      href: "/dashboard/applications",
-      icon: FileText,
-    },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Gig Board', href: '/dashboard/gigs', icon: Briefcase },
+    { name: 'My Applications', href: '/dashboard/applications', icon: FileText },
+    { name: 'My Workspace', href: '/dashboard/workspace', icon: Monitor },
+    { name: 'Learning', href: '/dashboard/learning', icon: GraduationCap },
+    { name: 'Profile', href: '/dashboard/profile', icon: User },
   ];
+
+
 
   const navigation =
     user?.role === "ADMIN" || user?.role === "OPERATIONS"

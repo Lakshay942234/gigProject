@@ -20,11 +20,15 @@ export const LoginPage = () => {
         setError('');
 
         try {
+            console.log('Attempting login with:', { email, password: '***' });
             const response = await api.post('/auth/login', { email, password });
+            console.log('Login response:', response.data);
             login(response.data.user, response.data.accessToken);
             navigate('/dashboard');
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Failed to login');
+            console.error('Login error:', err);
+            console.error('Error response:', err.response);
+            setError(err.response?.data?.message || err.message || 'Failed to login');
         } finally {
             setIsLoading(false);
         }

@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  UseGuards,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Put } from '@nestjs/common';
 import { GigsService } from './gigs.service';
 import {
   CreateGigDto,
@@ -23,7 +14,7 @@ import { Role, GigStatus } from '@prisma/client';
 @Controller('gigs')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class GigsController {
-  constructor(private readonly gigsService: GigsService) {}
+  constructor(private readonly gigsService: GigsService) { }
 
   @Post()
   @Roles(Role.ADMIN, Role.OPERATIONS)
@@ -39,10 +30,28 @@ export class GigsController {
     return this.gigsService.findAll(status);
   }
 
+  @Get('applications')
+  @Roles(Role.ADMIN, Role.OPERATIONS)
+  getAllApplications() {
+    return this.gigsService.getAllApplications();
+  }
+
   @Get('my-applications')
   @Roles(Role.CANDIDATE)
   getMyApplications(@CurrentUser('id') userId: string) {
     return this.gigsService.getMyApplications(userId);
+  }
+
+  @Put('applications/:id/accept')
+  @Roles(Role.ADMIN, Role.OPERATIONS)
+  acceptApplication(@Param('id') id: string) {
+    return this.gigsService.acceptApplication(id);
+  }
+
+  @Put('applications/:id/reject')
+  @Roles(Role.ADMIN, Role.OPERATIONS)
+  rejectApplication(@Param('id') id: string) {
+    return this.gigsService.rejectApplication(id);
   }
 
   @Get(':id')
