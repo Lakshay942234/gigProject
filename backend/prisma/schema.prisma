@@ -2,7 +2,7 @@
 // This schema defines all entities for the complete platform lifecycle
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -73,22 +73,30 @@ enum OnboardingStage {
 }
 
 model Candidate {
-  id              String          @id @default(uuid())
-  userId          String          @unique
+  id     String @id @default(uuid())
+  userId String @unique
+
+  // JSON fields
+  address      Json @default("{}")
+  skills       Json @default("[]")
+  languages    Json @default("[]")
+  availability Json @default("{}")
+
+  // Profile fields
+  phone           String?
+  city            String?
+  state           String?
+  zipCode         String?
+  country         String?
+  bio             String?
+  hourlyRate      Float?
+  experienceYears Int?
+
+  // Onboarding & qualification
   onboardingStage OnboardingStage @default(REGISTERED)
-
-  // Personal Info
-  dateOfBirth DateTime?
-  address     Json? // { street, city, state, zip, country }
-
-  // Skills & Availability
-  skills       Json // Array of skill names
-  languages    Json // Array of { name, proficiency }
-  availability Json // { timezone, preferredShifts, hoursPerWeek }
-
-  // Qualification
+  dateOfBirth     DateTime?
   versantScore    Float?
-  qualifiedToWork Boolean   @default(false)
+  qualifiedToWork Boolean         @default(false)
   qualifiedAt     DateTime?
 
   createdAt DateTime @default(now())

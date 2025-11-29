@@ -117,8 +117,8 @@ export const ActivityFeed = () => {
                                 variants={item}
                                 className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 dark:hover:bg-white/5 transition-colors cursor-pointer group"
                             >
-                                <div className={`${activity.iconBg} p - 2 rounded - lg transition - transform group - hover: scale - 110`}>
-                                    <Icon className={`h - 4 w - 4 ${activity.iconColor} `} />
+                                <div className={`${activity.iconBg} p-2 rounded-lg transition-transform group-hover:scale-110`}>
+                                    <Icon className={`h-4 w-4 ${activity.iconColor}`} />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium leading-tight">
