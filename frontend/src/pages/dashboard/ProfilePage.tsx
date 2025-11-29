@@ -15,7 +15,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../components/ui/avatar";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle2 } from "lucide-react";
 
 interface CandidateProfile {
   id: string;
@@ -34,6 +34,7 @@ interface CandidateProfile {
   experienceYears: number;
   hourlyRate: number;
   bio: string;
+  qualifiedToWork: boolean;
 }
 
 export const ProfilePage = () => {
@@ -41,6 +42,7 @@ export const ProfilePage = () => {
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isQualifying, setIsQualifying] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -85,6 +87,7 @@ export const ProfilePage = () => {
         experienceYears: 0,
         hourlyRate: 0,
         bio: "",
+        qualifiedToWork: false,
       });
     } finally {
       setIsLoading(false);
@@ -114,6 +117,27 @@ export const ProfilePage = () => {
       setError(err.response?.data?.message || "Failed to update profile");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleQualify = async () => {
+    setIsQualifying(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      await api.post("/candidates/quiz-complete");
+      setSuccess(
+        "Qualification completed successfully! You can now apply for gigs."
+      );
+      // Refresh profile to update status
+      fetchProfile();
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || "Failed to complete qualification"
+      );
+    } finally {
+      setIsQualifying(false);
     }
   };
 
@@ -150,6 +174,28 @@ export const ProfilePage = () => {
                 {user?.firstName} {user?.lastName}
               </h3>
               <p className="text-sm text-muted-foreground">{user?.email}</p>
+
+              <div className="mt-6 w-full">
+                {profile?.qualifiedToWork ? (
+                  <div className="flex items-center justify-center rounded-md bg-green-50 p-3 text-green-700">
+                    <CheckCircle2 className="mr-2 h-5 w-5" />
+                    <span className="font-medium">Qualified Agent</span>
+                  </div>
+                ) : (
+                  <Button
+                    className="w-full"
+                    variant="default"
+                    onClick={handleQualify}
+                    disabled={isQualifying}
+                  >
+                    {isQualifying && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Complete Qualification
+                  </Button>
+                )}
+              </div>
+
               <div className="mt-4 flex w-full flex-col space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Role</span>
