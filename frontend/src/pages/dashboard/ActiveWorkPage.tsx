@@ -278,7 +278,7 @@ Good luck with your shift!
     }
 
     return (
-        <div className="relative w-full h-screen bg-gray-100">
+        <div className="fixed inset-0 z-50 flex flex-col bg-gray-50">
             {/* Red Alert Overlay */}
             <AnimatePresence>
                 {showAlert && (
@@ -316,37 +316,42 @@ Good luck with your shift!
                 )}
             </AnimatePresence>
 
-            {/* Work Controls (visible when not in fullscreen) */}
-            {!isFullscreen && (
-                <div className="absolute top-4 right-4 z-40 flex gap-2">
-                    <Button onClick={enterFullscreen} variant="default">
-                        <Maximize className="mr-2 h-4 w-4" />
-                        Enter Fullscreen
-                    </Button>
-                    <Button onClick={handleEndWork} variant="destructive">
-                        <X className="mr-2 h-4 w-4" />
-                        End Work
-                    </Button>
-                </div>
-            )}
-
-            {/* Fullscreen Controls */}
-            {isFullscreen && (
-                <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-gray-900/80 to-transparent z-40 p-4 flex justify-between items-center">
-                    <div className="text-white">
-                        <h3 className="font-semibold">{gigTitle}</h3>
-                        <p className="text-sm text-gray-300">Work Session Active</p>
+            {/* Header Bar with Controls */}
+            <div className="flex-shrink-0 bg-white border-b border-gray-200 shadow-sm">
+                <div className="px-6 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <h2 className="text-lg font-semibold text-gray-800">{gigTitle}</h2>
+                        <span className="text-sm text-gray-500">Work Session Active</span>
                     </div>
-                    <Button onClick={handleEndWork} variant="destructive" size="sm">
-                        <X className="mr-2 h-4 w-4" />
-                        End Session
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        {!isFullscreen && (
+                            <Button onClick={enterFullscreen} variant="outline" size="sm">
+                                <Maximize className="mr-2 h-4 w-4" />
+                                Enter Fullscreen
+                            </Button>
+                        )}
+                        <Button onClick={handleEndWork} variant="destructive" size="sm">
+                            <X className="mr-2 h-4 w-4" />
+                            End Session
+                        </Button>
+                    </div>
                 </div>
-            )}
+            </div>
 
-            {/* Zepto Chat Interface */}
-            <div className="w-full h-full bg-white">
-                <ZeptoChatInterface />
+            {/* Main Content Area - Split Layout */}
+            <div className="flex flex-1 overflow-hidden">
+                {/* Chat Interface - Left Side (50%) */}
+                <div className="w-1/2 h-full bg-white border-r border-gray-200">
+                    <ZeptoChatInterface />
+                </div>
+
+                {/* Sidebar Space - Right Side (50%) */}
+                <div className="w-1/2 h-full bg-gray-50 p-6 overflow-auto">
+                    <div className="text-center text-gray-400 mt-12">
+                        <p className="text-sm">Sidebar Coming Soon</p>
+                        <p className="text-xs mt-2">Customer info and tools will appear here</p>
+                    </div>
+                </div>
             </div>
         </div>
     );
