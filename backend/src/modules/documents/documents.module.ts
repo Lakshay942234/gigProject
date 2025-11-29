@@ -4,9 +4,9 @@ import { DocumentsController } from './documents.controller';
 import { CandidatesModule } from '../candidates/candidates.module';
 
 @Module({
-    imports: [CandidatesModule],
-    controllers: [DocumentsController],
-    providers: [DocumentsService],
-    exports: [DocumentsService],
+  imports: [CandidatesModule],
+  controllers: [DocumentsController],
+  providers: [DocumentsService],
+  exports: [DocumentsService],
 })
-export class DocumentsModule { }
+export class DocumentsModule {}

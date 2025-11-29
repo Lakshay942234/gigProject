@@ -5,9 +5,9 @@ import { GigsModule } from '../gigs/gigs.module';
 import { CandidatesModule } from '../candidates/candidates.module';
 
 @Module({
-    imports: [GigsModule, CandidatesModule],
-    controllers: [WorkController],
-    providers: [WorkService],
-    exports: [WorkService],
+  imports: [GigsModule, CandidatesModule],
+  controllers: [WorkController],
+  providers: [WorkService],
+  exports: [WorkService],
 })
-export class WorkModule { }
+export class WorkModule {}

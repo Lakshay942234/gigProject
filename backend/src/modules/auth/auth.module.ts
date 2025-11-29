@@ -8,24 +8,24 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-    imports: [
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-        JwtModule.registerAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: async (config: ConfigService) => {
-                return {
-                    secret: config.get<string>('JWT_SECRET') || 'default-secret-key',
-                    signOptions: {
-                        expiresIn: '1h', //  Fixed: use literal string type
-                    },
-                };
-            },
-        }),
-        UsersModule,
-    ],
-    controllers: [AuthController],
-    providers: [AuthService, JwtStrategy],
-    exports: [AuthService, JwtStrategy, PassportModule],
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => {
+        return {
+          secret: config.get<string>('JWT_SECRET') || 'default-secret-key',
+          signOptions: {
+            expiresIn: '1h', //  Fixed: use literal string type
+          },
+        };
+      },
+    }),
+    UsersModule,
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService, JwtStrategy, PassportModule],
 })
-export class AuthModule { }
+export class AuthModule {}

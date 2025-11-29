@@ -8,17 +8,17 @@ import { Role } from '@prisma/client';
 @Controller('analytics')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AnalyticsController {
-    constructor(private readonly analyticsService: AnalyticsService) { }
+  constructor(private readonly analyticsService: AnalyticsService) {}
 
-    @Get('dashboard')
-    @Roles(Role.ADMIN, Role.OPERATIONS)
-    getDashboardMetrics() {
-        return this.analyticsService.getDashboardMetrics();
-    }
+  @Get('dashboard')
+  @Roles(Role.ADMIN, Role.OPERATIONS)
+  getDashboardMetrics() {
+    return this.analyticsService.getDashboardMetrics();
+  }
 
-    @Post('snapshot')
-    @Roles(Role.ADMIN) // Usually triggered by cron, but exposed for manual trigger
-    createSnapshot() {
-        return this.analyticsService.createDailySnapshot();
-    }
+  @Post('snapshot')
+  @Roles(Role.ADMIN) // Usually triggered by cron, but exposed for manual trigger
+  createSnapshot() {
+    return this.analyticsService.createDailySnapshot();
+  }
 }

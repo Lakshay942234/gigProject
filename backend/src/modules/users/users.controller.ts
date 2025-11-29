@@ -9,16 +9,16 @@ import { Role } from '@prisma/client';
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
-    constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService) {}
 
-    @Get('profile')
-    async getProfile(@CurrentUser() user: any) {
-        return this.usersService.findById(user.id);
-    }
+  @Get('profile')
+  async getProfile(@CurrentUser() user: any) {
+    return this.usersService.findById(user.id);
+  }
 
-    @Get()
-    @Roles(Role.ADMIN, Role.OPERATIONS)
-    async getAllUsers() {
-        return this.usersService.findAll();
-    }
+  @Get()
+  @Roles(Role.ADMIN, Role.OPERATIONS)
+  async getAllUsers() {
+    return this.usersService.findAll();
+  }
 }

@@ -5,9 +5,9 @@ import { VersantController } from './versant.controller';
 import { CandidatesModule } from '../candidates/candidates.module';
 
 @Module({
-    imports: [HttpModule, CandidatesModule],
-    controllers: [VersantController],
-    providers: [VersantService],
-    exports: [VersantService],
+  imports: [HttpModule, CandidatesModule],
+  controllers: [VersantController],
+  providers: [VersantService],
+  exports: [VersantService],
 })
-export class VersantModule { }
+export class VersantModule {}

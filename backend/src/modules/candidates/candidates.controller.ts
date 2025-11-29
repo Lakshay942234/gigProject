@@ -10,23 +10,29 @@ import { Role } from '@prisma/client';
 @Controller('candidates')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class CandidatesController {
-    constructor(private readonly candidatesService: CandidatesService) { }
+  constructor(private readonly candidatesService: CandidatesService) {}
 
-    @Post()
-    @Roles(Role.CANDIDATE)
-    create(@CurrentUser('id') userId: string, @Body() createCandidateDto: CreateCandidateDto) {
-        return this.candidatesService.create(userId, createCandidateDto);
-    }
+  @Post()
+  @Roles(Role.CANDIDATE)
+  create(
+    @CurrentUser('id') userId: string,
+    @Body() createCandidateDto: CreateCandidateDto,
+  ) {
+    return this.candidatesService.create(userId, createCandidateDto);
+  }
 
-    @Get('me')
-    @Roles(Role.CANDIDATE)
-    getProfile(@CurrentUser('id') userId: string) {
-        return this.candidatesService.findByUserId(userId);
-    }
+  @Get('me')
+  @Roles(Role.CANDIDATE)
+  getProfile(@CurrentUser('id') userId: string) {
+    return this.candidatesService.findByUserId(userId);
+  }
 
-    @Patch('me')
-    @Roles(Role.CANDIDATE)
-    update(@CurrentUser('id') userId: string, @Body() updateCandidateDto: UpdateCandidateDto) {
-        return this.candidatesService.update(userId, updateCandidateDto);
-    }
+  @Patch('me')
+  @Roles(Role.CANDIDATE)
+  update(
+    @CurrentUser('id') userId: string,
+    @Body() updateCandidateDto: UpdateCandidateDto,
+  ) {
+    return this.candidatesService.update(userId, updateCandidateDto);
+  }
 }

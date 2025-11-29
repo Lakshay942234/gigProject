@@ -14,6 +14,7 @@ import { WorkModule } from './modules/work/work.module';
 import { QaModule } from './modules/qa/qa.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -37,9 +38,11 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     WorkModule,
     QaModule,
     PaymentsModule,
+    PaymentsModule,
     AnalyticsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

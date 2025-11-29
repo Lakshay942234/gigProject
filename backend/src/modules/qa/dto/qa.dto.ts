@@ -1,65 +1,73 @@
-import { IsString, IsEnum, IsOptional, IsNumber, IsBoolean, IsArray, ValidateNested } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsNumber,
+  IsBoolean,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ReviewStatus } from '@prisma/client';
 
 export class ScorecardItemDto {
-    @IsString()
-    criteriaName: string;
+  @IsString()
+  criteriaName: string;
 
-    @IsNumber()
-    score: number;
+  @IsNumber()
+  score: number;
 
-    @IsNumber()
-    maxScore: number;
+  @IsNumber()
+  maxScore: number;
 
-    @IsString()
-    @IsOptional()
-    comments?: string;
+  @IsString()
+  @IsOptional()
+  comments?: string;
 }
 
 export class CreateReviewDto {
-    @IsString()
-    workSessionId: string;
+  @IsString()
+  workSessionId: string;
 
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ScorecardItemDto)
-    scorecard: ScorecardItemDto[];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ScorecardItemDto)
+  scorecard: ScorecardItemDto[];
 
-    @IsString()
-    @IsOptional()
-    feedback?: string;
+  @IsString()
+  @IsOptional()
+  feedback?: string;
 
-    @IsArray()
-    @IsString({ each: true })
-    @IsOptional()
-    errorTags?: string[];
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  errorTags?: string[];
 
-    @IsString()
-    @IsOptional()
-    positives?: string;
+  @IsString()
+  @IsOptional()
+  positives?: string;
 
-    @IsString()
-    @IsOptional()
-    areasOfImprovement?: string;
+  @IsString()
+  @IsOptional()
+  areasOfImprovement?: string;
 
-    @IsBoolean()
-    @IsOptional()
-    requiresRetraining?: boolean;
+  @IsBoolean()
+  @IsOptional()
+  requiresRetraining?: boolean;
 }
 
 export class UpdateReviewDto {
-    @IsEnum(ReviewStatus)
-    @IsOptional()
-    status?: ReviewStatus;
+  @IsEnum(ReviewStatus)
+  @IsOptional()
+  status?: ReviewStatus;
 
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ScorecardItemDto)
-    @IsOptional()
-    scorecard?: ScorecardItemDto[];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ScorecardItemDto)
+  @IsOptional()
+  scorecard?: ScorecardItemDto[];
 
-    @IsString()
-    @IsOptional()
-    feedback?: string;
+  @IsString()
+  @IsOptional()
+  feedback?: string;
 }

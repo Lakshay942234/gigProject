@@ -1,44 +1,50 @@
-import { IsString, IsEnum, IsNumber, IsOptional, IsObject } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsObject,
+} from 'class-validator';
 import { TransactionType, PayoutStatus } from '@prisma/client';
 
 export class CreateTransactionDto {
-    @IsString()
-    candidateId: string;
+  @IsString()
+  candidateId: string;
 
-    @IsEnum(TransactionType)
-    type: TransactionType;
+  @IsEnum(TransactionType)
+  type: TransactionType;
 
-    @IsNumber()
-    amount: number;
+  @IsNumber()
+  amount: number;
 
-    @IsString()
-    description: string;
+  @IsString()
+  description: string;
 
-    @IsObject()
-    @IsOptional()
-    metadata?: any;
+  @IsObject()
+  @IsOptional()
+  metadata?: any;
 }
 
 export class RequestPayoutDto {
-    @IsNumber()
-    amount: number;
+  @IsNumber()
+  amount: number;
 
-    @IsString()
-    paymentMethod: string;
+  @IsString()
+  paymentMethod: string;
 
-    @IsObject()
-    paymentDetails: any;
+  @IsObject()
+  paymentDetails: any;
 }
 
 export class UpdatePayoutStatusDto {
-    @IsEnum(PayoutStatus)
-    status: PayoutStatus;
+  @IsEnum(PayoutStatus)
+  status: PayoutStatus;
 
-    @IsString()
-    @IsOptional()
-    failureReason?: string;
+  @IsString()
+  @IsOptional()
+  failureReason?: string;
 
-    @IsString()
-    @IsOptional()
-    paymentGatewayId?: string;
+  @IsString()
+  @IsOptional()
+  paymentGatewayId?: string;
 }

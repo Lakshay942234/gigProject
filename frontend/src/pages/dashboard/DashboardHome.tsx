@@ -4,6 +4,7 @@ import { EarningsChart } from "../../components/dashboard/EarningsChart";
 import { LearningSection } from "../../components/dashboard/LearningSection";
 import { DollarSign, Briefcase, Star, Clock } from "lucide-react";
 import { motion } from "framer-motion";
+import { NotificationButton } from "../../components/dashboard/NotificationButton";
 
 export const DashboardHome = () => {
   const { user } = useAuthStore();
@@ -37,6 +38,9 @@ export const DashboardHome = () => {
         <p className="text-muted-foreground mt-2">
           Here's what's happening with your gigs today.
         </p>
+        <div className="mt-4">
+          <NotificationButton />
+        </div>
       </motion.div>
 
       <motion.div

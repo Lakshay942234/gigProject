@@ -5,9 +5,9 @@ import { WorkModule } from '../work/work.module';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-    imports: [WorkModule, UsersModule],
-    controllers: [QaController],
-    providers: [QaService],
-    exports: [QaService],
+  imports: [WorkModule, UsersModule],
+  controllers: [QaController],
+  providers: [QaService],
+  exports: [QaService],
 })
-export class QaModule { }
+export class QaModule {}

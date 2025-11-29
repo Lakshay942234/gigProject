@@ -1,55 +1,63 @@
-import { IsString, IsEnum, IsOptional, IsInt, IsArray, ValidateNested, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsInt,
+  IsArray,
+  ValidateNested,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { SessionStatus, ChatStatus } from '@prisma/client';
 
 export class StartSessionDto {
-    @IsString()
-    gigId: string;
+  @IsString()
+  gigId: string;
 }
 
 export class EndSessionDto {
-    @IsInt()
-    activeMinutes: number;
+  @IsInt()
+  activeMinutes: number;
 
-    @IsInt()
-    idleMinutes: number;
+  @IsInt()
+  idleMinutes: number;
 
-    @IsInt()
-    chatCount: number;
+  @IsInt()
+  chatCount: number;
 
-    @IsInt()
-    resolvedCount: number;
+  @IsInt()
+  resolvedCount: number;
 }
 
 export class CreateChatSessionDto {
-    @IsString()
-    workSessionId: string;
+  @IsString()
+  workSessionId: string;
 
-    @IsString()
-    @IsOptional()
-    externalChatId?: string;
+  @IsString()
+  @IsOptional()
+  externalChatId?: string;
 
-    @IsString()
-    @IsOptional()
-    customerName?: string;
+  @IsString()
+  @IsOptional()
+  customerName?: string;
 }
 
 export class UpdateChatSessionDto {
-    @IsEnum(ChatStatus)
-    status: ChatStatus;
+  @IsEnum(ChatStatus)
+  status: ChatStatus;
 
-    @IsInt()
-    @IsOptional()
-    handleTime?: number;
+  @IsInt()
+  @IsOptional()
+  handleTime?: number;
 
-    @IsOptional()
-    transcript?: any;
+  @IsOptional()
+  transcript?: any;
 
-    @IsString()
-    @IsOptional()
-    sentiment?: string;
+  @IsString()
+  @IsOptional()
+  sentiment?: string;
 
-    @IsNumber()
-    @IsOptional()
-    csatScore?: number;
+  @IsNumber()
+  @IsOptional()
+  csatScore?: number;
 }
