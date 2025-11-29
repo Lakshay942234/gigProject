@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
@@ -66,6 +67,7 @@ const demoCourses: Course[] = [
 ];
 
 export const LearningPage = () => {
+    const navigate = useNavigate();
     const [courses] = useState<Course[]>(demoCourses);
     const [filter, setFilter] = useState<'all' | 'video' | 'document' | 'quiz'>('all');
 
@@ -190,7 +192,7 @@ export const LearningPage = () => {
                                     <Button
                                         size="sm"
                                         variant={course.completed ? 'outline' : 'default'}
-                                        disabled
+                                        onClick={() => navigate(`/dashboard/learning/course/${course.id}`)}
                                     >
                                         {course.completed ? (
                                             <>

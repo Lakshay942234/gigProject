@@ -5,7 +5,7 @@ import { Candidate, OnboardingStage } from '@prisma/client';
 
 @Injectable()
 export class CandidatesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(
     userId: string,
@@ -69,6 +69,16 @@ export class CandidatesService {
     return this.prisma.candidate.update({
       where: { userId },
       data: { onboardingStage: stage },
+    });
+  }
+
+  async completeQuiz(userId: string): Promise<Candidate> {
+    return this.prisma.candidate.update({
+      where: { userId },
+      data: {
+        qualifiedToWork: true,
+        qualifiedAt: new Date(),
+      },
     });
   }
 }

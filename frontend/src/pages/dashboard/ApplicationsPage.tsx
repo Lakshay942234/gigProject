@@ -71,7 +71,7 @@ export const ApplicationsPage = () => {
                                 </p>
                             </div>
                             <div className="flex items-center space-x-4">
-                                <span className="text-sm font-medium">${app.gig.hourlyRate}/hr</span>
+                                <span className="text-sm font-medium">₹{app.gig.hourlyRate}/hr</span>
                                 <Badge variant={getStatusColor(app.status) as any}>
                                     {app.status}
                                 </Badge>
