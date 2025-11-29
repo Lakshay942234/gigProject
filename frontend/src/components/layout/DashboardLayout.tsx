@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../../store/auth.store";
 import { useTheme } from "../theme/ThemeProvider";
+import { NotificationsCenter } from "../dashboard/NotificationsCenter";
 import {
     LayoutDashboard,
     User,
@@ -193,6 +194,7 @@ export const DashboardLayout = () => {
                                     <Moon className="h-4 w-4" />
                                 )}
                             </Button>
+                            <NotificationsCenter />
 
                             {/* Profile Avatar Dropdown */}
                             <Link

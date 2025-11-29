@@ -76,7 +76,7 @@ export const GigBoardPage = () => {
                                     {gig.status}
                                 </Badge>
                             </div>
-                            <CardDescription className="line-clamp-2">
+                            <CardDescription className="whitespace-pre-wrap text-sm max-h-32 overflow-y-auto">
                                 {gig.description}
                             </CardDescription>
                         </CardHeader>

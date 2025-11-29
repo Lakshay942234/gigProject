@@ -13,10 +13,10 @@ export class GigsService {
   constructor(
     private prisma: PrismaService,
     private candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   async create(userId: string, createGigDto: CreateGigDto) {
-    const { startDate, endDate, ...gigData } = createGigDto;
+    const { startDate, endDate, startTime, endTime, recurringDays, ...gigData } = createGigDto;
 
     return this.prisma.gig.create({
       data: {
@@ -28,9 +28,9 @@ export class GigsService {
         schedule: {
           startDate,
           endDate,
-          startTime: createGigDto.startTime,
-          endTime: createGigDto.endTime,
-          recurringDays: createGigDto.recurringDays ?? [],
+          startTime: startTime || '',
+          endTime: endTime || '',
+          recurringDays: recurringDays || [],
           shifts: [], // Initialize with empty shifts
         },
         maxAgents: createGigDto.maxAgents ?? 10,

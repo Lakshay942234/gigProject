@@ -42,7 +42,53 @@ export class CreateCandidateDto {
   availability?: any;
 }
 
-export class UpdateCandidateDto extends CreateCandidateDto {
+export class UpdateCandidateDto {
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @IsOptional()
+  @IsString()
+  state?: string;
+
+  @IsOptional()
+  @IsString()
+  zipCode?: string;
+
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @IsOptional()
+  @IsString()
+  bio?: string;
+
+  @IsOptional()
+  hourlyRate?: number;
+
+  @IsOptional()
+  experienceYears?: number;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  skills?: string[];
+
+  @IsOptional()
+  @IsArray()
+  languages?: any[];
+
+  @IsOptional()
+  availability?: any;
+
   @IsOptional()
   @IsEnum(OnboardingStage)
   onboardingStage?: OnboardingStage;

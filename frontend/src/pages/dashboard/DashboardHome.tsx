@@ -1,7 +1,8 @@
 import { useAuthStore } from "../../store/auth.store";
-import { StatsCard } from "../../components/dashboard/StatsCard";
+import { AdvancedStatsCard } from "../../components/dashboard/AdvancedStatsCard";
 import { EarningsChart } from "../../components/dashboard/EarningsChart";
 import { LearningSection } from "../../components/dashboard/LearningSection";
+import { ActivityFeed } from "../../components/dashboard/ActivityFeed";
 import { DollarSign, Briefcase, Star, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { NotificationButton } from "../../components/dashboard/NotificationButton";
@@ -47,31 +48,35 @@ export const DashboardHome = () => {
         variants={item}
         className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
       >
-        <StatsCard
+        <AdvancedStatsCard
           title="Total Earnings"
-          value="$2,450"
+          value={2450}
           icon={DollarSign}
-          description="+$350 from last week"
+          description="This month"
           trend={{ value: 12, label: "vs last month" }}
+          sparklineData={[1200, 1450, 1300, 1800, 1950, 1700, 2100, 2300, 2200, 2450]}
         />
-        <StatsCard
+        <AdvancedStatsCard
           title="Active Gigs"
-          value="3"
+          value={3}
           icon={Briefcase}
           description="2 pending applications"
+          sparklineData={[1, 2, 2, 3, 3, 2, 3, 3, 4, 3]}
         />
-        <StatsCard
+        <AdvancedStatsCard
           title="Success Score"
           value="98%"
           icon={Star}
-          description="Top Rated Plus status"
-          trend={{ value: 2, label: "vs last month" }}
+          description="Top Rated Plus"
+          trend={{ value: 2, label: "this month" }}
+          sparklineData={[92, 93, 94, 95, 96, 96, 97, 97, 98, 98]}
         />
-        <StatsCard
+        <AdvancedStatsCard
           title="Hours Worked"
           value="124h"
           icon={Clock}
           description="This month"
+          sparklineData={[80, 95, 88, 100, 115, 105, 120, 125, 118, 124]}
         />
       </motion.div>
 
@@ -80,29 +85,7 @@ export const DashboardHome = () => {
           <EarningsChart />
         </motion.div>
         <motion.div variants={item} className="col-span-3">
-          <div className="glass-card rounded-xl p-6 h-full border border-white/20">
-            <h3 className="font-semibold mb-4">Recommended for You</h3>
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="flex items-center p-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/10"
-                >
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                    <Briefcase className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">
-                      Customer Support Specialist
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      $15 - $22/hr • Remote
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <ActivityFeed />
         </motion.div>
       </div>
 

@@ -8,12 +8,14 @@ import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
 import { RegisterDto, LoginDto, AuthResponseDto } from './dto/auth.dto';
 import { Role } from '@prisma/client';
+import { PrismaService } from '../../database/prisma.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private prisma: PrismaService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
@@ -32,6 +34,19 @@ export class AuthService {
       passwordHash: hashedPassword,
       role: registerDto.role || Role.CANDIDATE,
     });
+
+    // If user is a candidate, create candidate profile
+    if (user.role === Role.CANDIDATE) {
+      await this.prisma.candidate.create({
+        data: {
+          userId: user.id,
+          qualifiedToWork: false, // Initially not qualified until completing courses
+          skills: [],
+          languages: [],
+          availability: {},
+        },
+      });
+    }
 
     // Generate tokens
     const tokens = await this.generateTokens(user.id, user.email, user.role);
