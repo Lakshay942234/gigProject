@@ -35,7 +35,7 @@ const mockActivities: Activity[] = [
         id: "2",
         type: "payment",
         title: "Payment Received",
-        description: "$850 for Data Entry Project - March Week 2",
+        description: "₹850 for Data Entry Project - March Week 2",
         time: "5 hours ago",
         icon: DollarSign,
         iconBg: "bg-blue-100 dark:bg-blue-900/20",

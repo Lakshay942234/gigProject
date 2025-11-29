@@ -71,7 +71,7 @@ export const DashboardHome = () => {
         />
         <AdvancedStatsCard
           title="Hours Worked"
-          value="124h"
+          value="12.4h"
           icon={Clock}
           description="This month"
           sparklineData={[80, 95, 88, 100, 115, 105, 120, 125, 118, 124]}
