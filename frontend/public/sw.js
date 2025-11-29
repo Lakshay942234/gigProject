@@ -1,11 +1,30 @@
+const CACHE_NAME = "gigmax-pwa-v1";
+const ASSETS_TO_CACHE = ["/", "/index.html"];
+
 self.addEventListener("install", (event) => {
   console.log("Service Worker installing.");
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
+  );
 });
 
 self.addEventListener("activate", (event) => {
   console.log("Service Worker activating.");
   event.waitUntil(clients.claim());
+  event.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(
+        keyList.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
 });
 
 self.addEventListener("push", function (event) {
@@ -46,6 +65,16 @@ self.addEventListener("notificationclick", function (event) {
       if (clients.openWindow) {
         return clients.openWindow(event.notification.data.url);
       }
+    })
+  );
+});
+
+// 2. Fetch Event: Network First, Fallback to Cache
+// This is best for Hackathons so you don't get stuck with old cached code.
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
     })
   );
 });
