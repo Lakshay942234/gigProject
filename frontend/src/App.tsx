@@ -19,6 +19,7 @@ import { ApplicationManagementPage } from './pages/dashboard/admin/ApplicationMa
 import { WorkspacePage } from './pages/dashboard/WorkspacePage';
 import { ActiveWorkPage } from './pages/dashboard/ActiveWorkPage';
 import { LearningPage } from './pages/dashboard/LearningPage';
+import { CourseViewerPage } from './pages/dashboard/CourseViewerPage';
 
 import { DashboardWrapper } from "./components/dashboard/DashboardWrapper";
 
@@ -48,6 +49,10 @@ function App() {
             <Route
               path="/dashboard/learning"
               element={<LearningPage />}
+            />
+            <Route
+              path="/dashboard/learning/course/:courseId"
+              element={<CourseViewerPage />}
             />
           </Route>
 

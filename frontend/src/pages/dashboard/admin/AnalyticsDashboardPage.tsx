@@ -89,7 +89,7 @@ export const AnalyticsDashboardPage = () => {
                         <IndianRupee className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">${metrics?.todaysEarnings}</div>
+                        <div className="text-2xl font-bold">{metrics?.todaysEarnings}</div>
                         <p className="text-xs text-muted-foreground">
                             Total payout value
                         </p>

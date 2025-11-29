@@ -10,7 +10,7 @@ import { Role } from '@prisma/client';
 @Controller('candidates')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class CandidatesController {
-  constructor(private readonly candidatesService: CandidatesService) {}
+  constructor(private readonly candidatesService: CandidatesService) { }
 
   @Post()
   @Roles(Role.CANDIDATE)
@@ -34,5 +34,11 @@ export class CandidatesController {
     @Body() updateCandidateDto: UpdateCandidateDto,
   ) {
     return this.candidatesService.update(userId, updateCandidateDto);
+  }
+
+  @Post('quiz-complete')
+  @Roles(Role.CANDIDATE)
+  completeQuiz(@CurrentUser('id') userId: string) {
+    return this.candidatesService.completeQuiz(userId);
   }
 }

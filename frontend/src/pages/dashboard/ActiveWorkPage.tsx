@@ -1,14 +1,15 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
+import { ZeptoChatInterface } from '../../components/dashboard/ZeptoChatInterface';
 import { AlertTriangle, X, Maximize } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const ActiveWorkPage = () => {
     const { gigId } = useParams();
     const location = useLocation();
+    //const navigate = useNavigate();
     const navigate = useNavigate();
-    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
@@ -35,8 +36,8 @@ export const ActiveWorkPage = () => {
 ## Common Issues & Solutions:
 
 - **Password Reset**: Guide through email verification
-- **Billing Questions**: Check account history first
-- **Technical Issues**: Follow troubleshooting checklist
+    - **Billing Questions**: Check account history first
+        - **Technical Issues**: Follow troubleshooting checklist
 
 Good luck with your shift!
         `.trim(),
@@ -308,14 +309,10 @@ Good luck with your shift!
                 </div>
             )}
 
-            {/* Iframe - Demo URL (replace with actual client URL) */}
-            <iframe
-                ref={iframeRef}
-                src="https://example.com"
-                className="w-full h-full border-0"
-                title="Work Interface"
-                allow="fullscreen"
-            />
+            {/* Zepto Chat Interface */}
+            <div className="w-full h-full bg-white dark:bg-zinc-900">
+                <ZeptoChatInterface />
+            </div>
         </div>
     );
 };

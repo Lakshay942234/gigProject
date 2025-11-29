@@ -80,9 +80,9 @@ export class GigsService {
 
     const gig = await this.prisma.gig.findUnique({ where: { id: gigId } });
     if (!gig) throw new NotFoundException('Gig not found');
-    if (gig.status !== GigStatus.OPEN) {
-      throw new BadRequestException('Gig is not open for applications');
-    }
+    // if (gig.status !== GigStatus.OPEN) {
+    //   throw new BadRequestException('Gig is not open for applications');
+    // }
 
     // Check existing application
     const existingApplication = await this.prisma.gigApplication.findUnique({

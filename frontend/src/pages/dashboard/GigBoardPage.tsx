@@ -104,7 +104,7 @@ export const GigBoardPage = () => {
                   <div className="flex items-center">
                     <IndianRupee className="mr-2 h-4 w-4" />
                     {(() => {
-                      const currencySymbol = gig.currency === 'INR' ? '₹' : '$';
+                      const currencySymbol = gig.currency === '₹';
                       const rate = gig.payRate || gig.hourlyRate || 0;
 
                       // Calculate hours if shift times are available

@@ -131,7 +131,7 @@ export const WorkspacePage = () => {
                                         <div className="flex items-center gap-2">
                                             <IndianRupee className="h-4 w-4 text-muted-foreground" />
                                             <span>
-                                                {gig.currency === 'INR' ? '₹' : '$'}{gig.payRate}/hr
+                                                {'₹'}{gig.payRate}/hr
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-2 col-span-2">
