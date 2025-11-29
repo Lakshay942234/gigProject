@@ -42,7 +42,7 @@ export const DashboardLayout = () => {
 
   const adminNavigation = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Create Gig", href: "/dashboard/admin/gigs/create", icon: Plus },
+    { name: "Create Gig", href: "/dashboard/admin/create-gig", icon: Plus },
     { name: "User Management", href: "/dashboard/admin/users", icon: User },
     { name: "Analytics", href: "/dashboard/admin/analytics", icon: Briefcase },
     { name: "Payouts", href: "/dashboard/admin/payouts", icon: FileText },
